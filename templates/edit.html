@@ -2,9 +2,26 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Редактирование студента</title>
+    <meta charset="UTF-8"/>
+    <title>Edit student</title>
 </head>
 <body>
+
+<form action="/edit.html" method="POST">
+    <p>Name (2-30 symbols + " " "-" "."): <input type="text" name="name"/></p>
+    <p>Surname (2-50 symbols + " " "-" "."): <input type="text" name="surname"/></p>
+    <p>Sex: <input type="radio" name="sex" value="male" checked/>Male<input type="radio" name="sex" value="female">Female</p>
+    <p>Birthday (yyyy-mm-dd): <input type="text" name="surname"/></p>
+    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="surname"/></p>
+    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="surname"/></p>
+    <p>Group: <select name="group">
+        <option selected value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></p>
+    <p><input type="submit" value="Add"></p>
+</form>
 
 </body>
 </html>

@@ -21,6 +21,7 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-xml:9.4.3.v20170317" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:9.4.3.v20170317" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:9.4.3.v20170317" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.24" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.7" level="project" />
   </component>
 </module>
