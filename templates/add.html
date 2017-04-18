@@ -2,27 +2,37 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Add student</title>
 </head>
 <body>
 
-<form action="/add.html" method="POST">
+<form action="/add" method="POST">
     <p>Name (2-30 symbols + " " "-" "."): <input type="text" name="name"/></p>
     <p>Surname (2-50 symbols + " " "-" "."): <input type="text" name="surname"/></p>
-    <p>Sex: <input type="radio" name="sex" value="male" checked/>Male<input type="radio" name="sex" value="female">Female</p>
-    <p>Birthday (yyyy-mm-dd): <input type="text" name="surname"/></p>
-    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="surname"/></p>
-    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="surname"/></p>
-    <p>Group: <select name="group">
-        <option selected value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
+    <p>Sex: <input type="radio" name="sex" value="Male" checked/>Male<input type="radio" name="sex" value="Female">Female</p>
+    <p>Birthday (yyyy-mm-dd): <input type="text" name="birthday"/></p>
+    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="nationality"/></p>
+    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="address"/></p>
+    <p>Group: <select name="group_id">
+        <option selected value="110">А8-01 </option>
+        <option value="111">А8-02</option>
+        <option value="100">Б8-01</option>
+        <option value="101">Б8-02</option>
+        <option value="102">Б8-03</option>
+        <option value="104">К8-121</option>
+        <option value="103">К8-122</option>
+        <option value="105">К8-123</option>
+        <option value="106">К8-124</option>
+        <option value="107">Т8-07</option>
+        <option value="108">Т8-11</option>
+        <option value="109">Т8-12</option>
     </select></p>
-    <p>Mark (2.00-5.00): <input type="text" name="surname"/></p>
+    <p>Mark (2.00-5.00): <input type="text" name="mark"/></p>
     <p><input type="submit" value="Add"></p>
 </form>
+
+<p>Parameters: ${parameters}</p>
 
 </body>
 </html>

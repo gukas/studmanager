@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import templater.PageGenerator;
 
-public class AllRequestsServlet extends HttpServlet{
+public class IndexRequestsServlet extends HttpServlet{
     public void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException
     {
@@ -19,7 +19,7 @@ public class AllRequestsServlet extends HttpServlet{
         Map<String, Object> pageVariables = createPageVariablesMap(request);
         pageVariables.put("message", "");
 
-        response.getWriter().println(PageGenerator.instance().getPage("add.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("index.html", pageVariables));
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -41,7 +41,7 @@ public class AllRequestsServlet extends HttpServlet{
         }
         pageVariables.put("message", message == null ? "" : message);
 
-        response.getWriter().println(PageGenerator.instance().getPage("add.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("index.html", pageVariables));
     }
 
     private static Map<String, Object> createPageVariablesMap(HttpServletRequest request) {

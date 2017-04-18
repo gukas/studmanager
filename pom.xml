@@ -63,7 +63,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>RELEASE</version>
         </dependency>
-        
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
