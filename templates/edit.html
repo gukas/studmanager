@@ -7,20 +7,28 @@
 </head>
 <body>
 
-<form action="/edit.html" method="POST">
-    <p>Name (2-30 symbols + " " "-" "."): <input type="text" name="name"/></p>
-    <p>Surname (2-50 symbols + " " "-" "."): <input type="text" name="surname"/></p>
-    <p>Sex: <input type="radio" name="sex" value="male" checked/>Male<input type="radio" name="sex" value="female">Female</p>
-    <p>Birthday (yyyy-mm-dd): <input type="text" name="surname"/></p>
-    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="surname"/></p>
-    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="surname"/></p>
-    <p>Group: <select name="group">
-        <option selected value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
+<form action="/edit?id=${id}" method="POST">
+    <p>Name (2-30 symbols + " " "-" "."): <input type="text" name="name" value="${name}"/></p>
+    <p>Surname (2-50 symbols + " " "-" "."): <input type="text" name="surname" value="${surname}"/></p>
+    <p>Sex: <input type="radio" name="sex" value="Male" <#if sex == "Male">checked</#if>/>Male<input type="radio" name="sex" value="Female" <#if sex == "Female">checked</#if>/>Female</p>
+    <p>Birthday (yyyy-mm-dd): <input type="text" name="birthday" value="${birthday}"/></p>
+    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="nationality" value="${nationality}"/></p>
+    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="address" value="${address}"/></p>
+    <p>Group: <select name="group_id">
+        <option <#if group_id == "110">selected</#if> value="110">А8-01 </option>
+        <option <#if group_id == "111">selected</#if> value="111">А8-02</option>
+        <option <#if group_id == "100">selected</#if> value="100">Б8-01</option>
+        <option <#if group_id == "101">selected</#if> value="101">Б8-02</option>
+        <option <#if group_id == "102">selected</#if> value="102">Б8-03</option>
+        <option <#if group_id == "104">selected</#if> value="104">К8-121</option>
+        <option <#if group_id == "103">selected</#if> value="103">К8-122</option>
+        <option <#if group_id == "105">selected</#if> value="105">К8-123</option>
+        <option <#if group_id == "106">selected</#if> value="106">К8-124</option>
+        <option <#if group_id == "107">selected</#if> value="107">Т8-07</option>
+        <option <#if group_id == "108">selected</#if> value="108">Т8-11</option>
+        <option <#if group_id == "109">selected</#if> value="109">Т8-12</option>
     </select></p>
-    <p><input type="submit" value="Add"></p>
+    <p><input type="submit" value="Edit"></p>
 </form>
 
 </body>
