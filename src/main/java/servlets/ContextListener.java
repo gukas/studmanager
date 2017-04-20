@@ -22,7 +22,7 @@ public class ContextListener implements ServletContextListener {
 
     private static DataSource createDataSorce () {
         MysqlDataSource mysqlDataSource = new MysqlDataSource();
-        mysqlDataSource.setUrl("jdbc:mysql://localhost:3306/college?serverTimezone=UTC&useSSL=false");
+        mysqlDataSource.setUrl("jdbc:mysql://localhost:3306/college?serverTimezone=UTC&useSSL=false&characterEncoding=UTF-8");
         mysqlDataSource.setUser("root");
         mysqlDataSource.setPassword("root");
         mysqlDataSource.setZeroDateTimeBehavior("convertToNull");

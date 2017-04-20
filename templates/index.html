@@ -7,7 +7,18 @@
 </head>
 <body>
 
-Comming soon!
+<a href="/add">Add new student</a>
+<a href="/tasks">Tasks reports</a>
+
+<p>We have these students:
+<table border=1>
+    <#list students as student>
+        <tr>
+            <td>${student.name}<td>${student.surname}<td>${student.birthday}<td>${student.group}<td>${student.mark}
+            <td><a href="/edit?id=${student.id}">Edit</a>
+            <td><a href="/delete?id=${student.id}">Delete</a>
+    </#list>
+</table>
 
 </body>
 </html>

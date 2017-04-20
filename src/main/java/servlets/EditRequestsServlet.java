@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -74,7 +76,6 @@ public class EditRequestsServlet extends HttpServlet{
         }
         pageVariables.put("message", message == null ? "" : message);
 
-
         String surname = request.getParameter("surname");
         String name = request.getParameter("name");
         String sex = request.getParameter("sex");
@@ -101,21 +102,37 @@ public class EditRequestsServlet extends HttpServlet{
             ps.setString(7, group_id);
             ps.setString(8, id);
             ps.execute();
-            pageVariables.put("surname", surname);
-            pageVariables.put("name", name);
-            pageVariables.put("sex", sex);
-            pageVariables.put("birthday", birthday);
-            pageVariables.put("nationality", nationality);
-            pageVariables.put("address", address);
-            pageVariables.put("group_id", group_id);
-            pageVariables.put("id", id);
             System.out.println("Update student!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        // TODO вынести копипасту про получение списка студентов
+        List<Map<String, Object>> students = new ArrayList<Map<String, Object>>();
+        try {
+            Connection conn = ds.getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT s.id, s.surname, s.name, s.birthday, g.nomer as `group`, s.mark FROM student s LEFT JOIN group_st g on g.id = s.group_id");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> student = new HashMap<String, Object>();
+                student.put("id", rs.getString("id"));
+                student.put("surname", rs.getString("surname"));
+                student.put("name", rs.getString("name"));
+                student.put("birthday", rs.getString("birthday"));
+                student.put("group", rs.getString("group"));
+                student.put("mark", rs.getString("mark"));
+                students.add(student);
+            }
+            System.out.println("Get student!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        pageVariables.put("students", students);
+
         response.setContentType("text/html;charset=utf-8");
-        response.getWriter().println(PageGenerator.instance().getPage("edit.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("index.html", pageVariables));
     }
 
     private static DataSource getDs(ServletContext ctxt) {
