@@ -6,12 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -21,18 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import freemarker.ext.beans.HashAdapter;
+import dbservice.ContextListener;
 import templater.PageGenerator;
+
 
 public class IndexRequestsServlet extends HttpServlet{
 
     public void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException
     {
-
-        Map<String, Object> pageVariables = createPageVariablesMap(request);
-
-        // TODO вынести копипасту про получение списка студентов
         List<Map<String, Object>> students = new ArrayList<Map<String, Object>>();
         DataSource ds = getDs(request.getServletContext());
         try {
@@ -50,50 +43,24 @@ public class IndexRequestsServlet extends HttpServlet{
                 student.put("mark", rs.getString("mark"));
                 students.add(student);
             }
-            System.out.println("Get student!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("students", students);
 
         // setContentType должен быть перед getWriter
         response.setContentType("text/html;charset=utf-8");
         response.getWriter().println(PageGenerator.instance().getPage("index.html", pageVariables));
-
         response.setStatus(HttpServletResponse.SC_OK);
-
     }
 
     public void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        Map<String, Object> pageVariables = createPageVariablesMap(request);
-
-        String message = request.getParameter("message");
-
-        response.setContentType("text/html;charset=utf-8");
-
-        if (message == null || message.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        } else {
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
-        pageVariables.put("message", message == null ? "" : message);
-
-        response.getWriter().println(PageGenerator.instance().getPage("index.html", pageVariables));
     }
 
     private static DataSource getDs(ServletContext ctxt) {
         return (DataSource) ctxt.getAttribute(ContextListener.DS_PROPERTY_NAME);
-    }
-
-    private static Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
-        Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("method", request.getMethod());
-        pageVariables.put("URL", request.getRequestURL().toString());
-        pageVariables.put("pathInfo", request.getPathInfo());
-        pageVariables.put("sessionId", request.getSession().getId());
-        pageVariables.put("parameters", request.getParameterMap().toString());
-        return pageVariables;
     }
 }

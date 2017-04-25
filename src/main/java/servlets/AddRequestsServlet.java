@@ -3,11 +3,8 @@ package servlets;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -17,37 +14,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dbservice.ContextListener;
 import templater.PageGenerator;
+
+import static dbservice.Validation.validateAddress;
+import static dbservice.Validation.validateBirthday;
+import static dbservice.Validation.validateGroupId;
+import static dbservice.Validation.validateMark;
+import static dbservice.Validation.validateName;
+import static dbservice.Validation.validateNationality;
+import static dbservice.Validation.validateSex;
+import static dbservice.Validation.validateSurname;
 
 public class AddRequestsServlet extends HttpServlet {
     public void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException
     {
-        Map<String, Object> pageVariables = createPageVariablesMap(request);
-        pageVariables.put("message", "");
-
-
         // setContentType должен быть перед getWriter
         response.setContentType("text/html;charset=utf-8");
-        response.getWriter().println(PageGenerator.instance().getPage("add.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("add.html", null));
 
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
     public void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        Map<String, Object> pageVariables = createPageVariablesMap(request);
-
-        String message = request.getParameter("message");
-
-        if (message == null || message.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        } else {
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
-        pageVariables.put("message", message == null ? "" : message);
-
-
+            HttpServletResponse response) throws ServletException, IOException
+    {
         String surname = request.getParameter("surname");
         String name = request.getParameter("name");
         String sex = request.getParameter("sex");
@@ -57,67 +49,75 @@ public class AddRequestsServlet extends HttpServlet {
         String mark = request.getParameter("mark");
         String group_id = request.getParameter("group_id");
 
-        Map<String, String[]> params = request.getParameterMap();
-        // TODO валидация полученных значений
-        DataSource ds = getDs(request.getServletContext());
-        try {
-            Connection conn = ds.getConnection();
-            PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO student (surname, name, sex, birthday, nationality, address, mark, group_id) "
-                            + "VALUES (?,?,?,?,?,?,?,?)");
-            ps.setString(1, surname);
-            ps.setString(2, name);
-            ps.setString(3, sex);
-            ps.setString(4, birthday);
-            ps.setString(5, nationality);
-            ps.setString(6, address);
-            ps.setString(7, mark);
-            ps.setString(8, group_id);
-            ps.execute();
-            System.out.println("Insert student!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Map<String, Object> pageVariables = new HashMap<>();
+        pageVariables.put("surname", surname);
+        pageVariables.put("name", name);
+        pageVariables.put("sex", sex);
+        pageVariables.put("birthday", birthday);
+        pageVariables.put("nationality", nationality);
+        pageVariables.put("address", address);
+        pageVariables.put("mark", mark);
+        pageVariables.put("group_id", group_id);
 
-        // TODO вынести копипасту про получение списка студентов
-        List<Map<String, Object>> students = new ArrayList<Map<String, Object>>();
-        try {
-            Connection conn = ds.getConnection();
-            PreparedStatement ps = conn.prepareStatement(
-                    "SELECT s.id, s.surname, s.name, s.birthday, g.nomer as `group`, s.mark FROM student s LEFT JOIN group_st g on g.id = s.group_id");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Map<String, Object> student = new HashMap<String, Object>();
-                student.put("id", rs.getString("id"));
-                student.put("surname", rs.getString("surname"));
-                student.put("name", rs.getString("name"));
-                student.put("birthday", rs.getString("birthday"));
-                student.put("group", rs.getString("group"));
-                student.put("mark", rs.getString("mark"));
-                students.add(student);
+        // валидация полученных значений
+        Map<String, String> errors = new HashMap<>();
+        if (!validateSurname(surname)) {
+            errors.put("surname", "Error surname!");
+        }
+        if (!validateName(name)) {
+            errors.put("name", "Error name!");
+        }
+        if (!validateSex(sex)) {
+            errors.put("sex", "Error sex!");
+        }
+        if (!validateBirthday(birthday)) {
+            errors.put("birthday", "Error birthday!");
+        }
+        if (!validateNationality(nationality)) {
+            errors.put("nationality", "Error nationality!");
+        }
+        if (!validateAddress(address)) {
+            errors.put("address", "Error address!");
+        }
+        if (!validateMark(mark)) {
+            errors.put("mark", "Error mark!");
+        }
+        if (!validateGroupId(group_id)) {
+            errors.put("group_id", "Error group!");
+        }
+        pageVariables.put("error", errors);
+
+        if (errors.isEmpty()) {
+            DataSource ds = getDs(request.getServletContext());
+            try {
+                Connection conn = ds.getConnection();
+                PreparedStatement ps = conn.prepareStatement(
+                        "INSERT INTO student (surname, name, sex, birthday, nationality, address, mark, group_id) "
+                                + "VALUES (?,?,?,?,?,?,?,?)");
+                ps.setString(1, surname);
+                ps.setString(2, name);
+                ps.setString(3, sex);
+                ps.setString(4, birthday);
+                ps.setString(5, nationality);
+                ps.setString(6, address);
+                ps.setString(7, mark);
+                ps.setString(8, group_id);
+                ps.execute();
+                System.out.println("Insert student!");
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            System.out.println("Get student!");
-        } catch (SQLException e) {
-            e.printStackTrace();
+            response.sendRedirect("/");
+        } else {
+            // setContentType должен быть перед getWriter
+            response.setContentType("text/html;charset=utf-8");
+            response.getWriter().println(PageGenerator.instance().getPage("add.html", pageVariables));
+            response.setStatus(HttpServletResponse.SC_OK);
         }
 
-        pageVariables.put("students", students);
-
-        response.setContentType("text/html;charset=utf-8");
-        response.getWriter().println(PageGenerator.instance().getPage("index.html", pageVariables));
     }
 
     private static DataSource getDs(ServletContext ctxt) {
         return (DataSource) ctxt.getAttribute(ContextListener.DS_PROPERTY_NAME);
-    }
-
-    private static Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
-        Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("method", request.getMethod());
-        pageVariables.put("URL", request.getRequestURL().toString());
-        pageVariables.put("pathInfo", request.getPathInfo());
-        pageVariables.put("sessionId", request.getSession().getId());
-        pageVariables.put("parameters", request.getParameterMap().toString());
-        return pageVariables;
     }
 }

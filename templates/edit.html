@@ -8,12 +8,15 @@
 <body>
 
 <form action="/edit?id=${id}" method="POST">
-    <p>Name (2-30 symbols + " " "-" "."): <input type="text" name="name" value="${name}"/></p>
-    <p>Surname (2-50 symbols + " " "-" "."): <input type="text" name="surname" value="${surname}"/></p>
-    <p>Sex: <input type="radio" name="sex" value="Male" <#if sex == "Male">checked</#if>/>Male<input type="radio" name="sex" value="Female" <#if sex == "Female">checked</#if>/>Female</p>
-    <p>Birthday (yyyy-mm-dd): <input type="text" name="birthday" value="${birthday}"/></p>
-    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="nationality" value="${nationality}"/></p>
-    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="address" value="${address}"/></p>
+    <p>Name (2-30 symbols + " " "-" "."): <input type="text" name="name" value="${name}"/> <#if error?? && error.name??><font color="red">${error.name}</font></#if></p>
+    <p>Surname (2-50 symbols + " " "-" "."): <input type="text" name="surname" value="${surname}"/> <#if error?? && error.surname??><font color="red">${error.surname}</font></#if></p>
+    <p>Sex: <input type="radio" name="sex" value="Male" <#if sex == "Male">checked</#if>/>Male
+            <input type="radio" name="sex" value="Female" <#if sex == "Female">checked</#if>/>Female
+            <#if error?? && error.sex??><font color="red">${error.sex}</font></#if>
+    </p>
+    <p>Birthday (yyyy-mm-dd): <input type="text" name="birthday" value="${birthday}"/> <#if error?? && error.birthday??><font color="red">${error.birthday}</font></#if></p>
+    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="nationality" value="${nationality}"/> <#if error?? && error.nationality??><font color="red">${error.nationality}</font></#if></p>
+    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="address" value="${address}"/> <#if error?? && error.address??><font color="red">${error.address}</font></#if></p>
     <p>Group: <select name="group_id">
         <option <#if group_id == "110">selected</#if> value="110">А8-01 </option>
         <option <#if group_id == "111">selected</#if> value="111">А8-02</option>
@@ -27,7 +30,7 @@
         <option <#if group_id == "107">selected</#if> value="107">Т8-07</option>
         <option <#if group_id == "108">selected</#if> value="108">Т8-11</option>
         <option <#if group_id == "109">selected</#if> value="109">Т8-12</option>
-    </select></p>
+    </select> <#if error?? && error.group_id??><font color="red">${error.group_id}</font></#if></p>
     <p><input type="submit" value="Edit"></p>
 </form>
 

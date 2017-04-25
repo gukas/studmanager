@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import dbservice.ContextListener;
+
 public class TasksRequestsServlet extends HttpServlet{
     public void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException

@@ -8,31 +8,36 @@
 <body>
 
 <form action="/add" method="POST">
-    <p>Name (2-30 symbols + " " "-" "."): <input type="text" name="name"/></p>
-    <p>Surname (2-50 symbols + " " "-" "."): <input type="text" name="surname"/></p>
-    <p>Sex: <input type="radio" name="sex" value="Male" checked/>Male<input type="radio" name="sex" value="Female">Female</p>
-    <p>Birthday (yyyy-mm-dd): <input type="text" name="birthday"/></p>
-    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="nationality"/></p>
-    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="address"/></p>
+    <p>Name (2-30 symbols + " " "-" "."): <input type="text" name="name" <#if name??>value="${name}"</#if>/><#if error?? && error.name??><font color="red">${error.name}</font></#if></p>
+    <p>Surname (2-50 symbols + " " "-" "."): <input type="text" name="surname" <#if surname??>value="${surname}"</#if>/><#if error?? && error.surname??><font color="red">${error.surname}</font></#if></p>
+    <p>Sex: <input type="radio" name="sex" value="Male" <#if sex?? && sex == "Male">checked</#if>/>Male
+            <input type="radio" name="sex" value="Female" <#if sex?? && sex == "Female">checked</#if>/>Female
+            <#if error?? && error.sex??><font color="red">${error.sex}</font></#if>
+    </p>
+    <p>Birthday (yyyy-mm-dd): <input type="text" name="birthday" <#if birthday??>value="${birthday}"</#if>/>
+        <#if error?? && error.birthday??><font color="red">${error.birthday}</font></#if></p>
+    <p>Nationality (2-50 symbols + " " "-" "."): <input type="text" name="nationality" <#if nationality??>value="${nationality}"</#if>/>
+        <#if error?? && error.nationality??><font color="red">${error.nationality}</font></#if></p>
+    <p>Address (1-50 symbols + " " "-" "." "," ";"): <input type="text" name="address" <#if address??>value="${address}"</#if>/>
+        <#if error?? && error.address??><font color="red">${error.address}</font></#if></p>
     <p>Group: <select name="group_id">
-        <option selected value="110">А8-01 </option>
-        <option value="111">А8-02</option>
-        <option value="100">Б8-01</option>
-        <option value="101">Б8-02</option>
-        <option value="102">Б8-03</option>
-        <option value="104">К8-121</option>
-        <option value="103">К8-122</option>
-        <option value="105">К8-123</option>
-        <option value="106">К8-124</option>
-        <option value="107">Т8-07</option>
-        <option value="108">Т8-11</option>
-        <option value="109">Т8-12</option>
-    </select></p>
-    <p>Mark (2.00-5.00): <input type="text" name="mark"/></p>
+        <option <#if group_id?? && group_id == "110">selected</#if> value="110">А8-01</option>
+        <option <#if group_id?? && group_id == "111">selected</#if> value="111">А8-02</option>
+        <option <#if group_id?? && group_id == "100">selected</#if> value="100">Б8-01</option>
+        <option <#if group_id?? && group_id == "101">selected</#if> value="101">Б8-02</option>
+        <option <#if group_id?? && group_id == "102">selected</#if> value="102">Б8-03</option>
+        <option <#if group_id?? && group_id == "104">selected</#if> value="104">К8-121</option>
+        <option <#if group_id?? && group_id == "103">selected</#if> value="103">К8-122</option>
+        <option <#if group_id?? && group_id == "105">selected</#if> value="105">К8-123</option>
+        <option <#if group_id?? && group_id == "106">selected</#if> value="106">К8-124</option>
+        <option <#if group_id?? && group_id == "107">selected</#if> value="107">Т8-07</option>
+        <option <#if group_id?? && group_id == "108">selected</#if> value="108">Т8-11</option>
+        <option <#if group_id?? && group_id == "109">selected</#if> value="109">Т8-12</option>
+    </select><#if error?? && error.group_id??><font color="red">${error.group_id}</font></#if></p>
+    <p>Mark (2.00-5.00): <input type="text" name="mark" <#if mark??>value="${mark}"</#if>/>
+        <#if error?? && error.mark??><font color="red">${error.mark}</font></#if></p>
     <p><input type="submit" value="Add"></p>
 </form>
-
-<p>Parameters: ${parameters}</p>
 
 </body>
 </html>
