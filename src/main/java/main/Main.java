@@ -8,6 +8,8 @@ import servlets.DeleteRequestsServlet;
 import servlets.EditRequestsServlet;
 import servlets.IndexRequestsServlet;
 import servlets.AddRequestsServlet;
+import servlets.ReportRequestsServlet;
+import servlets.TasksRequestsServlet;
 
 class Main {
     public static void main(String[] args) throws Exception {
@@ -15,12 +17,16 @@ class Main {
         AddRequestsServlet addRequestsServlet = new AddRequestsServlet();
         EditRequestsServlet editRequestsServlet = new EditRequestsServlet();
         DeleteRequestsServlet deleteRequestsServlet = new DeleteRequestsServlet();
+        TasksRequestsServlet tasksRequestsServlet = new TasksRequestsServlet();
+        ReportRequestsServlet reportRequestsServlet = new ReportRequestsServlet();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(indexRequestsServlet), "/");
         context.addServlet(new ServletHolder(addRequestsServlet), "/add");
-        context.addServlet(new ServletHolder(editRequestsServlet), "/edit/*");
-        context.addServlet(new ServletHolder(deleteRequestsServlet), "/delete/*");
+        context.addServlet(new ServletHolder(editRequestsServlet), "/edit");
+        context.addServlet(new ServletHolder(deleteRequestsServlet), "/delete");
+        context.addServlet(new ServletHolder(tasksRequestsServlet), "/tasks");
+        context.addServlet(new ServletHolder(reportRequestsServlet), "/report");
         context.addEventListener(new ContextListener());
 
         Server server = new Server(8080);
