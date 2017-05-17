@@ -41,6 +41,21 @@ public class ReportRequestsServlet extends HttpServlet {
             case 3:
                 records = getSql("SELECT s.name, s.surname, s.birthday, s.mark, g.nomer FROM student s LEFT JOIN group_st g on g.id = s.group_id", ds);
                 break;
+            case 4:
+                records = getSql("SELECT s.name, s.surname, g.nomer, s.mark FROM student s LEFT JOIN group_st g on g.id = s.group_id WHERE s.nationality not in ('Русский', 'Русская')", ds);
+                break;
+            case 5:
+                records = getSql("SELECT count(*) as `students count` FROM student", ds);
+                break;
+            case 6:
+                records = getSql("SELECT count(*) as `good students count` FROM student where mark > 4", ds);
+                break;
+            case 7:
+                records = getSql("SELECT count(*) as `good feamle students count` FROM student where mark > 4 and sex = 'Female'", ds);
+                break;
+            case 8:
+                records = getSql("SELECT mark, count(*) FROM student group by mark", ds);
+                break;
             // TODO все остальные отчеты
             case 16:
                 records = getSql("select t1.surname, t1.name, t1.nomer, t2.group_summa from ("
