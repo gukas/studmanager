@@ -42,6 +42,39 @@ public class ReportRequestsServlet extends HttpServlet {
                 records = getSql("SELECT s.name, s.surname, s.birthday, s.mark, g.nomer FROM student s LEFT JOIN group_st g on g.id = s.group_id", ds);
                 break;
             // TODO все остальные отчеты
+            case 16:
+                records = getSql("select t1.surname, t1.name, t1.nomer, t2.group_summa from ("
+                        + "SELECT s.surname, e.name, g.nomer "
+                        + "from student s "
+                        + "left join var_assignment va on s.id = va.stud_id "
+                        + "join assignment a on va.id = a.var_assig_id "
+                        + "left join enterprise e on e.id = va.ent_id "
+                        + "left join group_st g on s.group_id = g.id) t1 "
+                        + "left join ("
+                        + "select g.nomer, IFNULL(SUM(p.summa), 0) as group_summa "
+                        + "from student s "
+                        + "left join group_st g on s.group_id = g.id "
+                        + "left join var_assignment va on s.id = va.stud_id "
+                        + "join assignment a on va.id = a.var_assig_id "
+                        + "left join payment p on p.assig_id=a.id group by g.nomer) t2 "
+                        + "on t1.nomer=t2.nomer", ds);
+                break;
+            case 17:
+                records = getSql("select nomer from group_st where nomer not in (select t1.nomer from ("
+                        + "SELECT s.surname, e.name, g.nomer "
+                        + "from student s "
+                        + "left join var_assignment va on s.id = va.stud_id "
+                        + "join assignment a on va.id = a.var_assig_id "
+                        + "left join enterprise e on e.id = va.ent_id "
+                        + "left join group_st g on s.group_id = g.id) t1 "
+                        + "left join ("
+                        + "select g.nomer, IFNULL(SUM(p.summa), 0) as group_summa "
+                        + "from student s "
+                        + "left join group_st g on s.group_id = g.id "
+                        + "left join var_assignment va on s.id = va.stud_id "
+                        + "join assignment a on va.id = a.var_assig_id "
+                        + "left join payment p on p.assig_id=a.id group by g.nomer) t2 "
+                        + "on t1.nomer=t2.nomer)", ds);
         }
 
         pageVariables.put("records", records);
