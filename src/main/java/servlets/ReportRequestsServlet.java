@@ -56,7 +56,32 @@ public class ReportRequestsServlet extends HttpServlet {
             case 8:
                 records = getSql("SELECT mark, count(*) FROM student group by mark", ds);
                 break;
-            // TODO все остальные отчеты
+            case 9:
+                records = getSql("SELECT sf.name, count(*) as `prof count` FROM profession p left join sub_faculty sf on p.sub_fac_id=sf.id group by sf.name", ds);
+                break;
+            case 10:
+                records = getSql("select g.nomer, round(avg(s.mark), 2) as `avg mark` from student s left join group_st g on s.group_id=g.id group by g.nomer", ds);
+                break;
+            case 11:
+                records = getSql("select s.surname, s.name, count(*) as `relative count` from relative r left join student s on s.id=r.stud_id group by s.id", ds);
+                break;
+            case 12:
+                records = getSql("select concat(s.surname, ' ', substring(s.name, 1, 1), '.') as `student`, TIMESTAMPDIFF(YEAR, s.birthday, CURDATE()) AS age from student s", ds);
+                break;
+            case 13:
+                records = getSql("select count(*) from student s where TIMESTAMPDIFF(YEAR, s.birthday, CURDATE()) > 22 and s.mark between 3.00 and 3.5", ds);
+                break;
+            case 14:
+                records = getSql("select s.surname, s.name from relative r left join abroad a on a.rel_id=r.id left join student s on s.id=r.stud_id where a.id is null group by s.id", ds);
+                break;
+            case 15:
+                records = getSql("select nomer, count(*) as `no abroad relative students count` from ("
+                        + "select g.nomer from relative r "
+                        + "left join abroad a on a.rel_id=r.id "
+                        + "left join student s on s.id=r.stud_id "
+                        + "left join group_st g on s.group_id=g.id "
+                        + "where a.id is null group by s.id) t group by nomer", ds);
+                break;
             case 16:
                 records = getSql("select t1.surname, t1.name, t1.nomer, t2.group_summa from ("
                         + "SELECT s.surname, e.name, g.nomer "
