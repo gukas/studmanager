@@ -1,7 +1,6 @@
 package dbservice;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Validation {
@@ -23,7 +22,7 @@ public class Validation {
             df.setLenient(false);
             df.parse(birthday);
             return true;
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return false;
         }
     }
